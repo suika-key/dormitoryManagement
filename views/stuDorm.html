@@ -1,0 +1,135 @@
+{{ extend './layout/layout.html' }}
+
+{{ block 'head' }}
+  <link rel="stylesheet" href="/public/css/dashboard.css">
+{{ /block }}
+
+{{ block 'body' }}
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="sidebar-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="/stuDorm?dorId={{ dorId }}">
+              学生宿舍详情
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/dormManage">
+              返回
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+      <h2>{{ dorId }}宿舍详情</h2>
+      <button class="btn btn-success" id="addStuBtn">添加学生</button>
+      <div id="bg">
+        <div id="addStu">
+          <div class="title">
+            <h5 class="heading"></h5>
+            <span id="closeBtn">×</span>
+          </div>
+          <form class="form">
+            <div class="form-group">
+              <label for="stuKey">学号</label>
+              <input type="text" class="form-control" id="stuKey" name="stuKey" required>
+            </div>
+            <div class="form-group">
+              <label for="stuName">姓名</label>
+              <input type="text" class="form-control" name="stuName" id="stuName" required>
+            </div>
+            <div class="form-group">
+              <label for="college">学院</label>
+              <input type="text" class="form-control" name="college" id="college" required>
+            </div>
+            <div class="form-group">
+              <label for="major">专业</label>
+              <input type="text" class="form-control" name="major" id="major" required>
+            </div>
+            <div class="form-group">
+              <label for="dorId">dorId</label>
+              <input type="text" class="form-control" name="dorId" disabled id="dorId" value="{{ dorId }}">
+            </div>
+            <div class="form-check">
+              <div>
+                <input class="form-check-input sex" type="radio" required id="male" name="stuSex" value="1" checked>
+                <label class="form-check-label" for="male">
+                  男
+                </label>
+              </div>
+              <div>
+                <input class="form-check-input sex" type="radio" id="female" name="stuSex" value="0">
+                <label class="form-check-label" for="female">
+                  女
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submit">添加</button>
+          </form>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>学号</th>
+              <th>姓名</th>
+              <th>性别</th>
+              <th>学院</th>
+              <th>专业</th>
+              <th>dorId</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ each students }}
+            <tr>
+              <td>{{ $index + 1 }}</td>
+              <td>{{ $value.stuKey }}</td>
+              <td>{{ $value.stuName }}</td>
+              <td>{{ $value.stuSex === '1' ? '男' : '女' }}</td>
+              <td>{{ $value.college }}</td>
+              <td>{{ $value.major }}</td>
+              <td>{{ $value.dorId }}</td>
+              <td>
+                <button class="btn btn-secondary modifyBtn">修改</button>
+                <button class="btn btn-danger deleteBtn">删除</button>
+                <button class="btn btn-info changeBtn">更换宿舍</button>
+              </td>
+            </tr>
+            {{ /each }}
+          </tbody>
+        </table>
+        {{ include './deleteBox.html' }}
+        <div class="change" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">更换宿舍</h5>
+              </div>
+              <form class="changeForm">
+                <div class="form-group">
+                  <label for="changeDorId">要更换的宿舍id</label>
+                  <input type="text" class="form-control" id="changeDorId" name="dorId" required>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelChange">取消</button>
+                  <button type="submit" class="btn btn-primary">确认</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+{{ /block }}
+
+{{ block 'script' }}
+<script src='/public/js/stu.js' ></script>
+{{ /block }}

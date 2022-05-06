@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学生宿舍管理系统</title>
+  <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+  <!-- css -->
+  {{ block 'head' }}{{ /block }}
+</head>
+<body>
+  <!-- 头部 -->
+  {{ block 'nav' }}
+  {{ include './header.html' }}
+  {{ /block }}
+
+  <!-- 中间内容 -->
+  {{ block 'body' }}
+  {{ /block }}
+
+  <!-- 公共js -->
+  <script src="/public/js/fnArr.js"></script>
+
+  <!-- js -->
+  {{ block 'script' }}{{ /block }}
+</body>
+</html>

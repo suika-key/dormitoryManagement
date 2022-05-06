@@ -1,0 +1,65 @@
+{{ extend './layout/layout.html' }}
+
+{{ block 'head' }}
+  <link rel="stylesheet" href="/public/css/login.css">
+{{ /block }}
+
+{{ block 'nav' }}{{ /block }}
+
+{{ block 'body' }}
+  <form class="form-signin">
+    <h2>学生宿舍管理系统</h2>
+    <h2>登录</h2>
+    <label for="inputId" class="sr-only">userId</label>
+    <input type="text" id="inputId" class="form-control" name="userId" placeholder="userId" required autofocus>
+    <label for="inputPassword" class="sr-only">password</label>
+    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="password" required>
+    <div class="forget"><a href="/forget">忘记密码</a></div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">login</button>
+  </form>
+{{ /block }}
+
+{{ block 'script' }}
+  <script>
+    //获取表单元素
+    const form = document.querySelector('.form-signin');
+    const userId = document.getElementById('inputId');
+    const password = document.getElementById('inputPassword');
+    form.addEventListener('submit', function(e) {
+      //阻止表单提交
+      e.preventDefault();
+      const formObj = {
+        [userId.name]: userId.value,
+        [password.name]: password.value
+      };
+      const formStr = JSON.stringify(formObj);
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/login');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.responseType = "json";
+      xhr.send(formStr);
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState === 4) {
+          const code = xhr.response.err_code;
+          const status = xhr.response.status;
+          if(code === 0) {
+            //成功跳转到相应页面
+            if(status === '0') {
+              window.location.href = '/stuInfo';
+            } else if(status === '1') {
+              window.location.href = '/dormManage';
+            } else if(status === '2') {
+              window.location.href = '/adminManage';
+            }
+          } else if(code === 1) {
+            //密码或用户名错误
+            alert('密码或用户名错误');
+          } else if(code === 500) {
+            //服务器错误
+            alert('服务器忙，请稍后重试！')
+          }
+        }
+      }
+    })
+  </script>
+{{ /block }}
